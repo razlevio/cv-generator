@@ -1,6 +1,6 @@
 import React from "react";
 
-function DegreeType({name, handleInputChange}) {
+function DegreeType({name, value, handleInputChange}) {
   const degreeTypes = [
     "BA",
     "BAdmin",
@@ -41,7 +41,7 @@ function DegreeType({name, handleInputChange}) {
   ];
   return (
     <select name={name} id={name} onChange={handleInputChange} className="text-black border p-2 rounded">
-      <option>Degree Type</option>
+      <option>{value ? value : "Degree Type"}</option>
       {degreeTypes.map(type => <option key={type} value={type}>{type}</option>)}
     </select>
   );

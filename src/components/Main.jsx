@@ -8,7 +8,7 @@ import _ from "lodash";
 
 function Main() {
   const [personalInfo, setPersonalInfo] = React.useState({});
-  const [education, setEducation] = React.useState({ed1: {institutionName: "harvard university", degree: "BSc", major:"Computer Sceince", minor:"Entrepreneurship", from:"2020", to:"2024", gpa:"4.0", honors:""}});
+  const [education, setEducation] = React.useState({ed0: {institutionName: "", degree: "", major: "", minor: "", from: "", to: "", gpa: "", honors: ""}});
 
   function updatePersonalInfo(e, key) {
     setPersonalInfo({...personalInfo, [key]: e.target.value});
@@ -19,6 +19,12 @@ function Main() {
     modified[key] = e.target.value;
     setEducation({...education, [educationID]: modified});
   }
+
+  function renderNewEducation() {
+    const nextId = Object.keys(education).length+1;
+    const newObj = {institutionName: "", degree: "", major: "", minor: "", from: "", to: "", gpa: "", honors: ""};
+    setEducation({...education, nextId: newObj});
+  };
 
   return (
     <div className="flex flex-col justify-center items-center 2xl:flex-row">
@@ -32,16 +38,18 @@ function Main() {
           <Input id="linkedin" name="linkedin" type="url" value={personalInfo.linkedin} placeholder="LinkedIn" handleInputChange={e => updatePersonalInfo(e, "linkedin")} />
         </Subsection>
         <Subsection heading="Education">
-          <Input id="institutionName" name="institutionName" type="text" value={education.ed1.institutionName} placeholder="Institution Name" handleInputChange={e => updateEducation(e, "institutionName", "ed1") }/>
-          <DegreeType name="degree" handleInputChange={e => updateEducation(e, "degree", "ed1")}/>
-          <Input id="major" />
-          <Input id="minor" />
-          <Years name="from" placeholder="Starting Year" handleInputChange={e => setEducation([...education, e.target.value])} />
-          <Years name="to" placeholder="Ending Year" handleInputChange={e => setEducation([...education, e.target.value])} />
-          <Input id="gpa" />
-          <Input id="honors" />
+          <Input id="institutionName" name="institutionName" type="text" value={education.ed0.institutionName} placeholder="Institution Name" handleInputChange={e => updateEducation(e, "institutionName", "ed0") }/>
+          <DegreeType name="degree" value={education.ed0.degree} handleInputChange={e => updateEducation(e, "degree", "ed0")}/>
+          <Input id="major" name="major" type="text" value={education.ed0.major} placeholder="Major" handleInputChange={e => updateEducation(e, "major", "ed0") }/>
+          <Input id="minor" name="minor" type="text" value={education.ed0.minor} placeholder="Minor" handleInputChange={e => updateEducation(e, "minor", "ed0") }/>
+          <Years name="from" value={education.ed0.from} placeholder="Starting Year" handleInputChange={e => updateEducation(e, "from", "ed0")} />
+          <Years name="to" value={education.ed0.to} placeholder="Ending Year" handleInputChange={e => updateEducation(e, "to", "ed0")} />
+          <Input id="gpa" name="gpa" type="text" value={education.ed0.gpa} placeholder="Cum. GPA" handleInputChange={e => updateEducation(e, "gpa", "ed0") }/>
+          <Input id="honors" name="honors" type="text" value={education.ed0.honors} placeholder="Honors" handleInputChange={e => updateEducation(e, "honors", "ed0") } />
+          <button onClick={renderNewEducation} className="bg-zinc-300">Add</button>
         </Subsection>
       </Section>
+
       <Section>
         <div>
             <h1 className="text-5xl">{`${_.upperCase(personalInfo.firstName)} ${_.upperCase(personalInfo.lastName)}`}</h1>

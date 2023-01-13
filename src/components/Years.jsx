@@ -1,6 +1,6 @@
 import React from "react";
 
-function Years({placeholder, name, handleInputChange }) {
+function Years({placeholder, value, name, handleInputChange }) {
   const currentYear = new Date().getFullYear();
   const years = []
 
@@ -9,7 +9,7 @@ function Years({placeholder, name, handleInputChange }) {
 
   return (
     <select id={name} name={name} onChange={handleInputChange} className="text-black border p-2 rounded">
-      <option>{placeholder}</option>
+      <option>{value ? value : placeholder}</option>
       {years.map(year => <option key={year} value={year}>{year}</option>)}
     </select>
   );
