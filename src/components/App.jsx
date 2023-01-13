@@ -1,12 +1,12 @@
 import React from "react";
 import Header from "./Header"
-import Form from "./Form"
+import Main from "./Main"
 
 function App() {
   return (
     <div className="app">
         <Header />
-        <Form />
+        <Main />
     </div>
   )
 }
