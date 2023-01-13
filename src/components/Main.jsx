@@ -13,7 +13,7 @@ function Main() {
   };
 
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex flex-col justify-center items-center 2xl:flex-row">
       <Section>
         <Subsection heading="Personal Information">
           <Input id="firstName" name="firstName" type="text" value={personalInfo.firstName} placeholder="First Name" handleInputChange={e => updatePersonalInfo(e, "firstName")} />
