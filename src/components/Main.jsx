@@ -2,15 +2,23 @@ import React from "react";
 import Section from "./Section";
 import Input from "./Input";
 import Subsection from "./Subsection";
+import Years from "./Years"
+import DegreeType from "./DegreeType";
 import _ from "lodash";
 
 function Main() {
-  
-  const [personalInfo, setPersonalInfo] = React.useState({firstName: "John", lastName: "Doe", tel: "555-555-5555", email: "johndoe@email.com", website: "johndoe.com", linkedin: "linkedin.com/in/johndoe"})
+  const [personalInfo, setPersonalInfo] = React.useState({});
+  const [education, setEducation] = React.useState({ed1: {institutionName: "harvard university", degree: "BSc", major:"Computer Sceince", minor:"Entrepreneurship", from:"2020", to:"2024", gpa:"4.0", honors:""}});
 
   function updatePersonalInfo(e, key) {
     setPersonalInfo({...personalInfo, [key]: e.target.value});
   };
+
+  function updateEducation(e, key, educationID) {
+    const modified = education[educationID];
+    modified[key] = e.target.value;
+    setEducation({...education, [educationID]: modified});
+  }
 
   return (
     <div className="flex flex-col justify-center items-center 2xl:flex-row">
@@ -22,6 +30,16 @@ function Main() {
           <Input id="email" name="email" type="email" value={personalInfo.email} placeholder="Email" handleInputChange={e => updatePersonalInfo(e, "email")} />
           <Input id="website" name="website" type="url"  value={personalInfo.website} placeholder="Website" handleInputChange={e => updatePersonalInfo(e, "website")} />
           <Input id="linkedin" name="linkedin" type="url" value={personalInfo.linkedin} placeholder="LinkedIn" handleInputChange={e => updatePersonalInfo(e, "linkedin")} />
+        </Subsection>
+        <Subsection heading="Education">
+          <Input id="institutionName" name="institutionName" type="text" value={education.ed1.institutionName} placeholder="Institution Name" handleInputChange={e => updateEducation(e, "institutionName", "ed1") }/>
+          <DegreeType name="degree" handleInputChange={e => updateEducation(e, "degree", "ed1")}/>
+          <Input id="major" />
+          <Input id="minor" />
+          <Years name="from" placeholder="Starting Year" handleInputChange={e => setEducation([...education, e.target.value])} />
+          <Years name="to" placeholder="Ending Year" handleInputChange={e => setEducation([...education, e.target.value])} />
+          <Input id="gpa" />
+          <Input id="honors" />
         </Subsection>
       </Section>
       <Section>
