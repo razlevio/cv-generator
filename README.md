@@ -1,2 +1,0 @@
-# CV-Generator
-Introducing the ultimate CV generator - a sleek and intuitive tool that streamlines the process of creating a professional and polished resume. With a user-friendly interface and customizable templates, crafting the perfect CV has never been easier. Say goodbye to hours of tedious formatting and hello to a polished, job-winning document. Give it a try and elevate your job search game today!
