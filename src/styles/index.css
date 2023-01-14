@@ -10,3 +10,13 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+
+.A4 {
+  width: 210mm;
+  min-height: 297mm;
+}
+
+.test {
+  width: 400mm;
+  min-height: 50mm;
+}

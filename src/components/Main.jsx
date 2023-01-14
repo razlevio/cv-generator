@@ -5,7 +5,7 @@ import Subsection from "./Subsection";
 import Years from "./Years"
 import Months from "./Months"
 import DegreeType from "./DegreeType";
-import {toLower, upperCase} from "lodash";
+import {toLower, toUpper} from "lodash";
 
 /**
  * Main React Compoenent
@@ -196,9 +196,9 @@ function Main() {
         </Subsection>
       </Section>
 
-      <Section>
+      <Section size="size: 21cm 29.7cm">
         <div>
-            <h1 className="text-5xl">{`${upperCase(personalInfo.firstName)} ${upperCase(personalInfo.lastName)}`}</h1>
+            <h1 className="text-5xl">{`${toUpper(personalInfo.firstName)} ${toUpper(personalInfo.lastName)}`}</h1>
             <p>{personalInfo.tel}</p>
             <p>{toLower(personalInfo.email)}</p>
             <p>{toLower(personalInfo.website)}</p>
