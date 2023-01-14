@@ -16,7 +16,7 @@ function Main() {
   // * State Section
   const [personalInfo, setPersonalInfo] = React.useState({});
   const [education, setEducation] = React.useState([{id: "0", institutionName: "", degree: "", major: "", minor: "", from: "", to: "", gpa: "", honors: ""}]);
-  const [experience, setExperience] = React.useState([{id: "0", company: "", position: "", fromMonth: "", toMonth: "", fromYear: "", toYear: "", description: ""}]);
+  const [experience, setExperience] = React.useState([{id: "0", company: "", position: "", from: "", to: "", description: ""}]);
 
 
   // * Event Handlers Section
@@ -134,8 +134,14 @@ function Main() {
           <DegreeType name="degree" value={education[index].degree} placeholder="Degree Type" handleInputChange={e => updateEducation(e, "degree", id)}/>
           <Input id="major" name="major" type="text" value={education[index].major} placeholder="Major" handleInputChange={e => updateEducation(e, "major", index) }/>
           <Input id="minor" name="minor" type="text" value={education[index].minor} placeholder="Minor" handleInputChange={e => updateEducation(e, "minor", index) }/>
-          <Years name="from" value={education[index].from} placeholder="Starting Year" handleInputChange={e => updateEducation(e, "from", index)} />
-          <Years name="to" value={education[index].to} placeholder="Ending Year" handleInputChange={e => updateEducation(e, "to", index)} />
+          <div className="flex flex-col gap-1">
+              <label htmlFor="from">From Date</label>
+              <Input id="from" name="from" type="date" value={education[index].from} placeholder="From Date" handleInputChange={e => updateEducation(e, "from", index)} />
+          </div>
+          <div className="flex flex-col gap-1">
+              <label htmlFor="to">To Date</label>
+              <Input id="to" name="to" type="date" value={education[index].to} placeholder="To Date" handleInputChange={e => updateEducation(e, "to", index)} />
+          </div>
           <Input id="gpa" name="gpa" type="text" value={education[index].gpa} placeholder="Cum. GPA" handleInputChange={e => updateEducation(e, "gpa", index) }/>
           <Input id="honors" name="honors" type="text" value={education[index].honors} placeholder="Honors" handleInputChange={e => updateEducation(e, "honors", index) } />
           <div className="flex justify-center items-center gap-3">
@@ -157,7 +163,14 @@ function Main() {
         <div key={id} className="flex flex-col gap-5">
             <Input id="company" name="company" type="text" value={experience[index].company} placeholder="Company Name" handleInputChange={e => updateExperience(e, "company", index) }/>
             <Input id="position" name="position" type="text" value={experience[index].position} placeholder="Position" handleInputChange={e => updateExperience(e, "position", index) }/>
-            <Months name="fromMonth" value={experience[index].fromMonth} placeholder="From Month" handleInputChange={e => updateExperience(e, "fromMonth", index)} />
+            <div className="flex flex-col gap-1">
+              <label htmlFor="from">From Date</label>
+              <Input id="from" name="from" type="date" value={experience[index].from} placeholder="From Date" handleInputChange={e => updateExperience(e, "from", index)} />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="to">To Date</label>
+              <Input id="to" name="to" type="date" value={experience[index].to} placeholder="To Date" handleInputChange={e => updateExperience(e, "to", index)} />
+            </div>
             <Input id="description" name="description" type="text" value={experience[index].description} placeholder="Position Description" handleInputChange={e => updateExperience(e, "description", index) } />
             <div className="flex justify-center items-center gap-3">
               {isTheLastElem && <button onClick={newExperience} className="text-zinc-400 border border-zinc-400 hover:bg-zinc-400 hover:text-white active:bg-zinc-600 font-bold uppercase px-8 py-2 w-1/2 rounded outline-none focus:outline-none ease-linear transition-all duration-150">Add</button>} 
