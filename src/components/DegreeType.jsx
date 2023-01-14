@@ -8,8 +8,9 @@ import React from "react";
  * @param {function} handleInputChange function to update the state
  * @returns select html element with all degree types possibilities
  */
-function DegreeType({name, value, handleInputChange}) {
+function DegreeType({placeholder, value, name, handleInputChange}) {
   const degreeTypes = [
+    "---",
     "BA",
     "BAdmin",
     "BASc",
@@ -48,10 +49,12 @@ function DegreeType({name, value, handleInputChange}) {
     "PhD",
   ];
   return (
-    <select name={name} id={name} onChange={handleInputChange} className="text-black border p-2 rounded">
-      <option>{value ? value : "Degree Type"}</option>
-      {degreeTypes.map(type => <option key={type} value={type}>{type}</option>)}
-    </select>
+    <div className="flex flex-col gap-1">
+      <label htmlFor={name}>{placeholder}</label>
+      <select name={name} id={name} onChange={handleInputChange} className="text-black border p-2 rounded">
+        {degreeTypes.map(type => <option key={type} value={type}>{type}</option>)}
+      </select>
+    </div>
   );
 }
 

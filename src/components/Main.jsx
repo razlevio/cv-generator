@@ -3,6 +3,7 @@ import Section from "./Section";
 import Input from "./Input";
 import Subsection from "./Subsection";
 import Years from "./Years"
+import Months from "./Months"
 import DegreeType from "./DegreeType";
 import {toLower, upperCase} from "lodash";
 
@@ -15,7 +16,7 @@ function Main() {
   // * State Section
   const [personalInfo, setPersonalInfo] = React.useState({});
   const [education, setEducation] = React.useState([{id: "0", institutionName: "", degree: "", major: "", minor: "", from: "", to: "", gpa: "", honors: ""}]);
-  const [experience, setExprience] = React.useState([]);
+  const [experience, setExperience] = React.useState([{id: "0", company: "", position: "", fromMonth: "", toMonth: "", fromYear: "", toYear: "", description: ""}]);
 
 
   // * Event Handlers Section
@@ -43,18 +44,32 @@ function Main() {
     setEducation(educationArray);
   }
 
+  /**
+   * Update the experience form section state
+   * @param {object} e the event object generated from the onchange event
+   * @param {string} key the experience object key that needed to be updated
+   * @param {number} index the index of the education array that need to be updated
+   */
+  function updateExperience(e, key, index) {
+      const experienceToUpdate = experience[index];
+      experienceToUpdate[key] = e.target.value;
+      const experienceArray = [...experience];
+      experienceArray[index] = experienceToUpdate;
+      setExperience(experienceArray);
+  }
+
 
   // * Utils Functions
 
   /**
    * Remove an education section from the education state array
    * @param {object} e the event object generated from the onclick event
-   * @param {*} index the index of the education array that need to be removed
+   * @param {number} index the index of the education array that need to be removed
    */
   function removeEducation(e, index) {
     const cloneOfEducation = [...education];
     cloneOfEducation.splice(index, 1)
-    if(cloneOfEducation.length === 0) setEducation([{id: '0', institutionName: "", degree: "", major: "", minor: "", from: "", to: "", gpa: "", honors: ""}]);
+    if(cloneOfEducation.length === 0) setEducation([{id: "0", institutionName: "", degree: "", major: "", minor: "", from: "", to: "", gpa: "", honors: ""}]);
     else setEducation(cloneOfEducation);
   }
 
@@ -67,6 +82,26 @@ function Main() {
     setEducation([...education, newObj]);
   };
 
+  /**
+   * Remove an experience section from the expereince state array
+   * @param {object} e the event object generated from the onclick event
+   * @param {number} index the index of the expereince array that need to be removed
+   */
+  function removeExperience(e, index) {
+    const cloneOfExpereince = [...experience];
+    cloneOfExpereince.splice(index, 1)
+    if(cloneOfExpereince.length === 0) setExprience([{id: "0", company: "", position: "", fromMonth: "", toMonth: "", fromYear: "", toYear: "", description: ""}]);
+    else setExperience(cloneOfExpereince);
+  }
+
+  /**
+   * Add new experience to the expereince state array and initialize it to empty strings
+   */
+  function newExperience() {
+    const nextId = (Math.random() + 1).toString(36).substring(2);
+    const newObj = {id: nextId, company: "", position: "", fromMonth: "", toMonth: "", fromYear: "", toYear: "", description: ""};
+    setExperience([...experience, newObj]);
+  };
 
   // * Render JSX Functions
 
@@ -96,7 +131,7 @@ function Main() {
     return(
       <div key={id} className="flex flex-col gap-5">
           <Input id="institutionName" name="institutionName" type="text" value={education[index].institutionName} placeholder="Institution Name" handleInputChange={e => updateEducation(e, "institutionName", index) }/>
-          <DegreeType name="degree" value={education[index].degree} handleInputChange={e => updateEducation(e, "degree", id)}/>
+          <DegreeType name="degree" value={education[index].degree} placeholder="Degree Type" handleInputChange={e => updateEducation(e, "degree", id)}/>
           <Input id="major" name="major" type="text" value={education[index].major} placeholder="Major" handleInputChange={e => updateEducation(e, "major", index) }/>
           <Input id="minor" name="minor" type="text" value={education[index].minor} placeholder="Minor" handleInputChange={e => updateEducation(e, "minor", index) }/>
           <Years name="from" value={education[index].from} placeholder="Starting Year" handleInputChange={e => updateEducation(e, "from", index)} />
@@ -111,9 +146,29 @@ function Main() {
     )
   }
 
+  /**
+   * @param {string} id 
+   * @returns div including the experience information inserted into the experience form section by id
+   */
+    function renderExperience(id) {
+      const index = experience.findIndex(elem => elem.id === id);
+      const isTheLastElem = index === experience.length-1;
+      return(
+        <div key={id} className="flex flex-col gap-5">
+            <Input id="company" name="company" type="text" value={experience[index].company} placeholder="Company Name" handleInputChange={e => updateExperience(e, "company", index) }/>
+            <Input id="position" name="position" type="text" value={experience[index].position} placeholder="Position" handleInputChange={e => updateExperience(e, "position", index) }/>
+            <Months name="fromMonth" value={experience[index].fromMonth} placeholder="From Month" handleInputChange={e => updateExperience(e, "fromMonth", index)} />
+            <Input id="description" name="description" type="text" value={experience[index].description} placeholder="Position Description" handleInputChange={e => updateExperience(e, "description", index) } />
+            <div className="flex justify-center items-center gap-3">
+              {isTheLastElem && <button onClick={newExperience} className="text-zinc-400 border border-zinc-400 hover:bg-zinc-400 hover:text-white active:bg-zinc-600 font-bold uppercase px-8 py-2 w-1/2 rounded outline-none focus:outline-none ease-linear transition-all duration-150">Add</button>} 
+              <button onClick={e => {removeExperience(e, index)}} className="text-red-400 border border-red-400 hover:bg-red-400 hover:text-white active:bg-red-600 font-bold uppercase px-8 py-2 w-1/2 rounded outline-none focus:outline-none ease-linear transition-all duration-150">Remove</button>
+            </div>
+        </div>
+      )
+    }
 
   // * Main compoenent JSX return statement
-  
+
   return (
     <div className="flex flex-col justify-center items-center 2xl:flex-row">
       <Section>
@@ -122,6 +177,9 @@ function Main() {
         </Subsection>
         <Subsection heading="Education">
           {education.map(elem => renderEducation(elem.id))}
+        </Subsection>
+        <Subsection heading="Experience">
+          {experience.map(elem => renderExperience(elem.id))}
         </Subsection>
       </Section>
 
