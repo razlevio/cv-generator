@@ -1,5 +1,8 @@
 import React from "react";
 
+/**
+ * @returns header component to render the application header section
+ */
 function Header() {
     return (
         <div className="bg-zinc-600 p-8">

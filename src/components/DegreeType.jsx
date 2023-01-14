@@ -1,5 +1,13 @@
 import React from "react";
 
+/**
+ * DegreeType compoenent that returns dropdown list of different degree types 
+ * @param {object} props object
+ * @param {string} name string for name and id of the the select element
+ * @param {string} value the value currently selected and stored in the state
+ * @param {function} handleInputChange function to update the state
+ * @returns select html element with all degree types possibilities
+ */
 function DegreeType({name, value, handleInputChange}) {
   const degreeTypes = [
     "BA",
