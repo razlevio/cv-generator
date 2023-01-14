@@ -6,6 +6,7 @@ import Years from "./Years"
 import Months from "./Months"
 import DegreeType from "./DegreeType";
 import {toLower, toUpper} from "lodash";
+import CVHeader from "./CVHeader";
 
 /**
  * Main React Compoenent
@@ -197,13 +198,7 @@ function Main() {
       </Section>
 
       <Section size="size: 21cm 29.7cm">
-        <div>
-            <h1 className="text-5xl">{`${toUpper(personalInfo.firstName)} ${toUpper(personalInfo.lastName)}`}</h1>
-            <p>{personalInfo.tel}</p>
-            <p>{toLower(personalInfo.email)}</p>
-            <p>{toLower(personalInfo.website)}</p>
-            <p>{toLower(personalInfo.linkedin)}</p>
-        </div>
+        <CVHeader firstName={personalInfo.firstName} lastName={personalInfo.lastName} tel={personalInfo.tel} email={personalInfo.email} website={personalInfo.website} linkedin={personalInfo.linkedin} />
       </Section>
     </div>
   );
