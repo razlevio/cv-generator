@@ -2,11 +2,9 @@ import React from "react";
 
 function Subsection(props) {
   return (
-    <div className="p-3">
+    <div className="p-3 flex flex-col gap-5">
       <h1 className="text-xl font-bold">{props.heading}</h1>
-      <div className="flex flex-col gap-5 mt-2">
-         {props.children}
-      </div>
+      {props.children}
     </div>
   );
 }
