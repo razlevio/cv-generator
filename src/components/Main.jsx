@@ -7,6 +7,7 @@ import Months from "./Months"
 import DegreeType from "./DegreeType";
 import CVHeader from "./CVHeader";
 import CVEducation from "./CVEducation";
+import CVExperience from "./CVExperience";
 
 /**
  * Main React Compoenent
@@ -132,7 +133,7 @@ function Main() {
     return(
       <div key={id} className="flex flex-col gap-5">
           <Input id="institutionName" name="institutionName" type="text" value={education[index].institutionName} placeholder="Institution Name" handleInputChange={e => updateEducation(e, "institutionName", index) }/>
-          <DegreeType name="degree" value={education[index].degree} placeholder="Degree Type" handleInputChange={e => updateEducation(e, "degree", id)}/>
+          <DegreeType name="degree" value={education[index].degree} placeholder="Degree Type" handleInputChange={e => updateEducation(e, "degree", index)}/>
           <Input id="major" name="major" type="text" value={education[index].major} placeholder="Major" handleInputChange={e => updateEducation(e, "major", index) }/>
           <Input id="minor" name="minor" type="text" value={education[index].minor} placeholder="Minor" handleInputChange={e => updateEducation(e, "minor", index) }/>
           <div className="flex flex-col gap-1">
@@ -191,6 +192,16 @@ function Main() {
     );
   };
 
+  function renderCVExperience(id) {
+    const index = experience.findIndex(elem => elem.id === id);
+    const isTheLastElem = index === experience.length-1;
+    return (
+      <div key={id}>
+        <CVExperience company={experience[index].company} position={experience[index].position} from={experience[index].from} to={experience[index].to} description={experience[index].description} />
+    </div>
+    );
+  };
+
   // * Main compoenent JSX return statement
 
   return (
@@ -210,10 +221,18 @@ function Main() {
       <Section size={true}>
           <div className="flex flex-col gap-5">
             <CVHeader firstName={personalInfo.firstName} lastName={personalInfo.lastName} tel={personalInfo.tel} email={personalInfo.email} website={personalInfo.website} linkedin={personalInfo.linkedin} />
-            <div>
-              <p className="text-2xl font-extralight">EDUCATION</p>
-              <div className="flex flex-col gap-4">
-                {education.map(elem => renderCVEducation(elem.id))}
+            <div className="flex justify-between gap-5 m-3">
+              <div className="min-w-fit flex flex-col gap-1">
+                <p className="text-2xl font-extralight">EDUCATION</p>
+                <div className="flex flex-col gap-8">
+                  {education.map(elem => renderCVEducation(elem.id))}
+                </div>
+              </div>
+              <div className="flex flex-col gap-1">
+                <p className="text-2xl font-extralight">EXPERIENCE</p>
+                <div className="flex flex-col gap-8">
+                  {experience.map(elem => renderCVExperience(elem.id))}
+                </div>
               </div>
             </div>
           </div>
