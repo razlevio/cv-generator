@@ -1,13 +1,12 @@
 import React from "react";
-import Section from "./Section";
+import Container from "./Container";
 import Input from "./Input";
 import Subsection from "./Subsection";
-import Years from "./Years"
-import Months from "./Months"
 import DegreeType from "./DegreeType";
 import CVHeader from "./CVHeader";
 import CVEducation from "./CVEducation";
 import CVExperience from "./CVExperience";
+import CVColumn from "./CVColumn";
 
 /**
  * Main React Compoenent
@@ -213,7 +212,7 @@ function Main() {
 
   return (
     <div className="flex flex-col justify-center items-center 2xl:flex-row">
-      <Section>
+      <Container>
         <Subsection heading="Personal Information">
           {renderPersonalInformation()}
         </Subsection>
@@ -223,27 +222,22 @@ function Main() {
         <Subsection heading="Experience">
           {experience.map(elem => renderExperience(elem.id))}
         </Subsection>
-      </Section>
+      </Container>
 
-      <Section>
+      <Container>
           <div className="flex flex-col gap-5">
             <CVHeader firstName={personalInfo.firstName} lastName={personalInfo.lastName} tel={personalInfo.tel} email={personalInfo.email} website={personalInfo.website} linkedin={personalInfo.linkedin} />
             <div className="flex justify-between gap-5 m-3">
-              <div className="min-w-fit flex flex-col gap-1">
-                <p className="text-2xl font-extralight">EDUCATION</p>
-                <div className="flex flex-col gap-8">
+              <CVColumn directon="left" heading="EDUCATION">
                   {education.map(elem => renderCVEducation(elem.id))}
-                </div>
-              </div>
-              <div className="flex flex-col gap-1">
-                <p className="text-2xl font-extralight">EXPERIENCE</p>
-                <div className="flex flex-col gap-8">
+                  <p>Skills</p>
+              </CVColumn>
+              <CVColumn directon="right" heading="EXPERIENCE">
                   {experience.map(elem => renderCVExperience(elem.id))}
-                </div>
-              </div>
+              </CVColumn>
             </div>
           </div>
-      </Section>
+      </Container>
     </div>
   );
 }
