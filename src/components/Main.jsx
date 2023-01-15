@@ -5,8 +5,8 @@ import Subsection from "./Subsection";
 import Years from "./Years"
 import Months from "./Months"
 import DegreeType from "./DegreeType";
-import {toLower, toUpper} from "lodash";
 import CVHeader from "./CVHeader";
+import CVEducation from "./CVEducation";
 
 /**
  * Main React Compoenent
@@ -157,29 +157,39 @@ function Main() {
    * @param {string} id 
    * @returns div including the experience information inserted into the experience form section by id
    */
-    function renderExperience(id) {
-      const index = experience.findIndex(elem => elem.id === id);
-      const isTheLastElem = index === experience.length-1;
-      return(
-        <div key={id} className="flex flex-col gap-5">
-            <Input id="company" name="company" type="text" value={experience[index].company} placeholder="Company Name" handleInputChange={e => updateExperience(e, "company", index) }/>
-            <Input id="position" name="position" type="text" value={experience[index].position} placeholder="Position" handleInputChange={e => updateExperience(e, "position", index) }/>
-            <div className="flex flex-col gap-1">
-              <label htmlFor="from">From Date</label>
-              <Input id="from" name="from" type="date" value={experience[index].from} placeholder="From Date" handleInputChange={e => updateExperience(e, "from", index)} />
-            </div>
-            <div className="flex flex-col gap-1">
-              <label htmlFor="to">To Date</label>
-              <Input id="to" name="to" type="date" value={experience[index].to} placeholder="To Date" handleInputChange={e => updateExperience(e, "to", index)} />
-            </div>
-            <Input id="description" name="description" type="text" value={experience[index].description} placeholder="Position Description" handleInputChange={e => updateExperience(e, "description", index) } />
-            <div className="flex justify-center items-center gap-3">
-              {isTheLastElem && <button onClick={newExperience} className="text-zinc-400 border border-zinc-400 hover:bg-zinc-400 hover:text-white active:bg-zinc-600 font-bold uppercase px-8 py-2 w-1/2 rounded outline-none focus:outline-none ease-linear transition-all duration-150">Add</button>} 
-              <button onClick={e => {removeExperience(e, index)}} className="text-red-400 border border-red-400 hover:bg-red-400 hover:text-white active:bg-red-600 font-bold uppercase px-8 py-2 w-1/2 rounded outline-none focus:outline-none ease-linear transition-all duration-150">Remove</button>
-            </div>
-        </div>
-      )
-    }
+  function renderExperience(id) {
+    const index = experience.findIndex(elem => elem.id === id);
+    const isTheLastElem = index === experience.length-1;
+    return(
+      <div key={id} className="flex flex-col gap-5">
+          <Input id="company" name="company" type="text" value={experience[index].company} placeholder="Company Name" handleInputChange={e => updateExperience(e, "company", index) }/>
+          <Input id="position" name="position" type="text" value={experience[index].position} placeholder="Position" handleInputChange={e => updateExperience(e, "position", index) }/>
+          <div className="flex flex-col gap-1">
+            <label htmlFor="from">From Date</label>
+            <Input id="from" name="from" type="date" value={experience[index].from} placeholder="From Date" handleInputChange={e => updateExperience(e, "from", index)} />
+          </div>
+          <div className="flex flex-col gap-1">
+            <label htmlFor="to">To Date</label>
+            <Input id="to" name="to" type="date" value={experience[index].to} placeholder="To Date" handleInputChange={e => updateExperience(e, "to", index)} />
+          </div>
+          <Input id="description" name="description" type="text" value={experience[index].description} placeholder="Position Description" handleInputChange={e => updateExperience(e, "description", index) } />
+          <div className="flex justify-center items-center gap-3">
+            {isTheLastElem && <button onClick={newExperience} className="text-zinc-400 border border-zinc-400 hover:bg-zinc-400 hover:text-white active:bg-zinc-600 font-bold uppercase px-8 py-2 w-1/2 rounded outline-none focus:outline-none ease-linear transition-all duration-150">Add</button>} 
+            <button onClick={e => {removeExperience(e, index)}} className="text-red-400 border border-red-400 hover:bg-red-400 hover:text-white active:bg-red-600 font-bold uppercase px-8 py-2 w-1/2 rounded outline-none focus:outline-none ease-linear transition-all duration-150">Remove</button>
+          </div>
+      </div>
+    )
+  }
+
+  function renderCVEducation(id) {
+    const index = education.findIndex(elem => elem.id === id);
+    const isTheLastElem = index === education.length-1;
+    return (
+      <div key={id}>
+        <CVEducation institutionName={education[index].institutionName} degree={education[index].degree} major={education[index].major} minor={education[index].minor} from={education[index].from} to={education[index].to} gpa={education[index].gpa} honors={education[index].honors} />
+    </div>
+    );
+  };
 
   // * Main compoenent JSX return statement
 
@@ -197,8 +207,16 @@ function Main() {
         </Subsection>
       </Section>
 
-      <Section size="size: 21cm 29.7cm">
-        <CVHeader firstName={personalInfo.firstName} lastName={personalInfo.lastName} tel={personalInfo.tel} email={personalInfo.email} website={personalInfo.website} linkedin={personalInfo.linkedin} />
+      <Section size={true}>
+          <div className="flex flex-col gap-5">
+            <CVHeader firstName={personalInfo.firstName} lastName={personalInfo.lastName} tel={personalInfo.tel} email={personalInfo.email} website={personalInfo.website} linkedin={personalInfo.linkedin} />
+            <div>
+              <p className="text-2xl font-extralight">EDUCATION</p>
+              <div className="flex flex-col gap-4">
+                {education.map(elem => renderCVEducation(elem.id))}
+              </div>
+            </div>
+          </div>
       </Section>
     </div>
   );

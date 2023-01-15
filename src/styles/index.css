@@ -1,6 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans&family=Lato:wght@100;400&family=Merriweather&family=Montserrat&family=Poppins:wght@600&family=Raleway:wght@100;400&family=Ubuntu&display=swap');
+
 
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
@@ -25,4 +27,12 @@
     rgba(0, 0, 0, 0.75),
     rgba(0, 0, 0, 0)
   );
+}
+
+.lato {
+  font-family: 'Lato', sans-serif;
+}
+
+.raleway {
+  font-family: 'Raleway', sans-serif;
 }

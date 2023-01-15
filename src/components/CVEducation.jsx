@@ -1,0 +1,16 @@
+import { startCase, toUpper } from "lodash";
+import React from "react";
+
+function CVEducation({institutionName, degree, major, minor, from, to, gpa, honors}) {
+    return (
+        <div>
+            <p className="text-xl font-bold">{toUpper(institutionName)}</p>
+            <p className="text-lg">{degree} in {startCase(major)} {minor ? `and ${startCase(minor)}` : null}</p>
+            <p>{from.substring(0, 4)} - {to.substring(0,4)}</p>
+            <p><span className="font-medium">Cum. GPA:</span> {gpa}</p>
+            {honors ? <p><span className="font-medium">Honors: </span>{honors}</p> : null}
+        </div>
+    )
+};
+
+export default CVEducation;
