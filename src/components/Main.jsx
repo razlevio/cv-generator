@@ -20,6 +20,12 @@ function Main() {
   const [education, setEducation] = React.useState([{id: "0", institutionName: "", degree: "", major: "", minor: "", from: "", to: "", gpa: "", honors: ""}]);
   const [experience, setExperience] = React.useState([{id: "0", company: "", position: "", from: "", to: "", description: ""}]);
 
+  React.useEffect(() => {
+    localStorage.setItem("personalInfo", personalInfo);
+    localStorage.setItem("education", education);
+    localStorage.setItem("experience", experience);
+  });
+
 
   // * Event Handlers Section
 
@@ -218,7 +224,7 @@ function Main() {
         </Subsection>
       </Section>
 
-      <Section size={true}>
+      <Section>
           <div className="flex flex-col gap-5">
             <CVHeader firstName={personalInfo.firstName} lastName={personalInfo.lastName} tel={personalInfo.tel} email={personalInfo.email} website={personalInfo.website} linkedin={personalInfo.linkedin} />
             <div className="flex justify-between gap-5 m-3">
