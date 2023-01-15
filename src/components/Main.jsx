@@ -3,9 +3,11 @@ import Container from "./Container";
 import Input from "./Input";
 import Subsection from "./Subsection";
 import DegreeType from "./DegreeType";
+import SkillType from "./SkillType"
 import CVHeader from "./CVHeader";
 import CVEducation from "./CVEducation";
 import CVExperience from "./CVExperience";
+import CVSkills from "./CVSkills";
 import CVColumn from "./CVColumn";
 
 /**
@@ -14,20 +16,28 @@ import CVColumn from "./CVColumn";
  */
 function Main() {
 
-  // * State Section
+// ? --------------------------------------------------------------------------------------------------
+// * State Section
+// ? --------------------------------------------------------------------------------------------------
+
   const [personalInfo, setPersonalInfo] = React.useState(localStorage.getItem('personalInfo') ? JSON.parse(localStorage.getItem('personalInfo')) : {});
   const [education, setEducation] = React.useState(localStorage.getItem('education') ? JSON.parse(localStorage.getItem('education')) : [{id: "0", institutionName: "", degree: "", major: "", minor: "", from: "", to: "", gpa: "", honors: ""}]);
   const [experience, setExperience] = React.useState(localStorage.getItem('experience') ? JSON.parse(localStorage.getItem('experience')) : [{id: "0", company: "", position: "", from: "", to: "", description: ""}]);
+  const [skills, setSkills] = React.useState(localStorage.getItem("skills") ? JSON.parse(localStorage.getItem("skills")) : [{id: "0", skillType:"", skill:""}]); 
 
-
+  /**
+   * useEffect hook to update the localStorage with every render
+   */
   React.useEffect(() => {
     localStorage.setItem("personalInfo", JSON.stringify(personalInfo));
     localStorage.setItem("education", JSON.stringify(education));
     localStorage.setItem("experience", JSON.stringify(experience));
-  }, [personalInfo, education, experience]);
+    localStorage.setItem("skills", JSON.stringify(skills));
+  }, [personalInfo, education, experience, skills]);
 
-
-  // * Event Handlers Section
+// ? --------------------------------------------------------------------------------------------------
+// * Event Handlers Section
+// ? --------------------------------------------------------------------------------------------------
 
   /**
    * Update the personal info form section state
@@ -66,8 +76,23 @@ function Main() {
       setExperience(experienceArray);
   }
 
+  /**
+   * Update the skills form state
+   * @param {object} e the event generated from the onchange
+   * @param {*} key the skills object key that needed to be updated
+   * @param {*} index the index of the skills array that need to be updated
+   */
+  function updateSkills(e, key, index) {
+      const skillsToUpdate = skills[index];
+      skillsToUpdate[key] = e.target.value;
+      const skillsArray = [...skills];
+      skillsArray[index] = skillsToUpdate;
+      setSkills(skillsArray);
+  }
 
-  // * Utils Functions
+// ? --------------------------------------------------------------------------------------------------
+// * Utils Functions
+// ? --------------------------------------------------------------------------------------------------
 
   /**
    * Remove an education section from the education state array
@@ -111,9 +136,43 @@ function Main() {
     setExperience([...experience, newObj]);
   };
 
-  // * Render JSX Functions
+  /**
+   * Remove an skill section from the skills state array
+   * @param {object} e the event object generated from the onclick event
+   * @param {number} index the index of the skills array that need to be removed
+   */
+  function removeSkills(e, index) {
+      const cloneOfSkills = [...skills];
+      cloneOfSkills.splice(index, 1)
+      if(cloneOfSkills.length === 0) setSkills([{id: "0", skillType:"", skill:""}]);
+      else setSkills(cloneOfSkills);
+  }
 
   /**
+   * Add new skill to the skills state array and initialize it to empty strings
+   */
+  function newSkills() {
+    const nextId = (Math.random() + 1).toString(36).substring(2);
+    const newObj = {id: nextId, skillType:"", skill:""};
+    setSkills([...skills, newObj]);
+  }
+
+  /**
+   * Return array of skills filtered by skill type
+   * @param {string} type the type we need to filter out
+   * @returns {array} array with the skills of type - type
+   */
+  function specificSkillsArray(type) {
+    const skls = skills.filter(skill => skill.skillType === type);
+    return skls;
+  }
+
+// ? --------------------------------------------------------------------------------------------------
+// * Render JSX Functions
+// ? --------------------------------------------------------------------------------------------------
+
+  /**
+   * Personal infromation form
    * @returns div including the personal information inserted into the personal inforamtion form section
    */
   function renderPersonalInformation() {
@@ -130,6 +189,7 @@ function Main() {
   }
 
   /**
+   * Education form
    * @param {string} id 
    * @returns div including the education information inserted into the education form section by id
    */
@@ -161,6 +221,7 @@ function Main() {
   }
 
   /**
+   * Expereince form
    * @param {string} id 
    * @returns div including the experience information inserted into the experience form section by id
    */
@@ -188,16 +249,46 @@ function Main() {
     )
   }
 
+  /**
+   * Skills form
+   * @param {string} id 
+   * @returns div including the skills information inserted into the education form section by id
+   */
+  function renderSkills(id) {
+    const index = skills.findIndex(elem => elem.id === id);
+    const isTheLastElem = index === skills.length-1;
+    return(
+      <div key={id} className="flex flex-col gap-5">
+          <SkillType key={id} name="skillType" value={skills[index].skillType} placeholder="Skill Type" handleInputChange={e => updateSkills(e, "skillType", index)}/>
+          <Input id="skill" name="skill" type="text" value={skills[index].skill} placeholder="Skill Name" handleInputChange={e => updateSkills(e, "skill", index) }/>
+          <div className="flex justify-center items-center gap-3">
+            {isTheLastElem && <button onClick={newSkills} className="text-zinc-400 border border-zinc-400 hover:bg-zinc-400 hover:text-white active:bg-zinc-600 font-bold uppercase px-8 py-2 w-1/2 rounded outline-none focus:outline-none ease-linear transition-all duration-150">Add</button>} 
+            <button onClick={e => {removeSkills(e, index)}} className="text-red-400 border border-red-400 hover:bg-red-400 hover:text-white active:bg-red-600 font-bold uppercase px-8 py-2 w-1/2 rounded outline-none focus:outline-none ease-linear transition-all duration-150">Remove</button>
+          </div>
+      </div>
+    )
+  }
+
+  /**
+   * Render the actual CV Education section
+   * @param {*} id 
+   * @returns div containing all of the formatted education section in the actual CV
+   */
   function renderCVEducation(id) {
     const index = education.findIndex(elem => elem.id === id);
     const isTheLastElem = index === education.length-1;
     return (
       <div key={id}>
         <CVEducation institutionName={education[index].institutionName} degree={education[index].degree} major={education[index].major} minor={education[index].minor} from={education[index].from} to={education[index].to} gpa={education[index].gpa} honors={education[index].honors} />
-    </div>
+      </div>
     );
   };
 
+  /**
+   * Render the actual CV Experience section
+   * @param {*} id 
+   * @returns div containing all of the formatted experience section in the actual CV
+   */
   function renderCVExperience(id) {
     const index = experience.findIndex(elem => elem.id === id);
     const isTheLastElem = index === experience.length-1;
@@ -208,7 +299,25 @@ function Main() {
     );
   };
 
-  // * Main compoenent JSX return statement
+  /**
+   * Render the actual CV Skills section
+   * @param {*} id 
+   * @returns div containing all of the formatted skills section in the actual CV
+   */
+  function renderCVSkills(id) {
+    const index = skills.findIndex(elem => elem.id === id);
+    const isTheLastElem = index === skills.length-1;
+
+    const listOfTypes = skills.filter(elem => elem.skillType === skills[index].skillType);
+    const indexInTypes = listOfTypes.findIndex(elem => elem.id === id);
+    const isTheLastElementInType = indexInTypes === listOfTypes.length-1;
+
+    return (<CVSkills key={id} skillType={skills[index].skillType} skill={skills[index].skill} lastElementInType={isTheLastElementInType} />);
+  }
+
+// ? --------------------------------------------------------------------------------------------------
+// * Main compoenent JSX return statement
+// ? --------------------------------------------------------------------------------------------------
 
   return (
     <div className="flex flex-col justify-center items-center 2xl:flex-row">
@@ -222,18 +331,45 @@ function Main() {
         <Subsection heading="Experience">
           {experience.map(elem => renderExperience(elem.id))}
         </Subsection>
+        <Subsection heading="Skills">
+          {skills.map(elem => renderSkills(elem.id))}
+        </Subsection>
       </Container>
 
       <Container>
           <div className="flex flex-col gap-5">
             <CVHeader firstName={personalInfo.firstName} lastName={personalInfo.lastName} tel={personalInfo.tel} email={personalInfo.email} website={personalInfo.website} linkedin={personalInfo.linkedin} />
             <div className="flex justify-between gap-5 m-3">
-              <CVColumn directon="left" heading="EDUCATION">
-                  {education.map(elem => renderCVEducation(elem.id))}
-                  <p>Skills</p>
+              <CVColumn>
+                  <div className="flex flex-col gap-1">
+                    <p className="text-2xl font-extralight">EDUCATION</p>
+                    <div className="flex flex-col gap-3">
+                      {education.map(elem => renderCVEducation(elem.id))}
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <p className="text-2xl font-extralight">SKILLS</p>
+                    {specificSkillsArray("Technical").length !== 0 ? <p className="text-lg font-bold">Technical</p> : null}
+                    <div className="flex flex-wrap gap-1">
+                      {specificSkillsArray("Technical") ? specificSkillsArray("Technical").map(skl => renderCVSkills(skl.id)) : null}
+                    </div>
+                    {specificSkillsArray("Proffesional").length !== 0 ? <p className="text-lg font-bold">Proffesional</p> : null}
+                    <div className="flex flex-wrap gap-1">
+                      {specificSkillsArray("Proffesional") ? specificSkillsArray("Proffesional").map(skl => renderCVSkills(skl.id)) : null}
+                    </div>
+                    {specificSkillsArray("Soft").length !== 0 ? <p className="text-lg font-bold">Soft Skills</p> : null}
+                    <div className="flex flex-wrap gap-1">
+                      {specificSkillsArray("Soft") ? specificSkillsArray("Soft").map(skl => renderCVSkills(skl.id)) : null}
+                    </div>
+                  </div>
               </CVColumn>
-              <CVColumn directon="right" heading="EXPERIENCE">
-                  {experience.map(elem => renderCVExperience(elem.id))}
+              <CVColumn>
+                  <div className="flex flex-col gap-1">
+                    <p className="text-2xl font-extralight">EXPERIENCE</p>
+                    <div className="flex flex-col gap-3">
+                        {experience.map(elem => renderCVExperience(elem.id))}
+                    </div>
+                  </div>
               </CVColumn>
             </div>
           </div>

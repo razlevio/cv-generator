@@ -11,6 +11,10 @@ module.exports = {
       "md": "960px",
       "lg": "1440px",
       "2xl": "1700px"
+    },
+    maxWidth: {
+      '1/3': "33%",
+      '2/3': "66%",
     }
   },
   plugins: [],

@@ -10,7 +10,7 @@ import {toUpper, toLower, truncate} from "lodash";
  * @param {string} email the email state
  * @param {string} website the website state
  * @param {string} linkedin the linkedin state
- * @returns 
+ * @returns div containting the header section of personal information in the actual CV
  */
 function CVHeader({firstName, lastName, tel, email, website, linkedin}) {
     function formatPhoneNumber(phoneNumber) {

@@ -1,11 +1,13 @@
 import React from "react";
 
+/**
+ * One column from the two columns layout output CV
+ * @param {object} props 
+ * @returns div containing the one column of the CV
+ */
 function CVColumn(props) {
-    const masterClassName = (props.directon === "left" ? "min-w-fit flex flex-col gap-1" : "flex flex-col gap-1")
-
     return(
-        <div className={masterClassName}>
-            <p className="text-2xl font-extralight">{props.heading}</p>
+        <div className="max-w-[50%] flex flex-col">
             <div className="flex flex-col gap-8">
                 {props.children}
             </div>
@@ -13,4 +15,4 @@ function CVColumn(props) {
     );
 };
 
-export default CVColumn;
+export default CVColumn

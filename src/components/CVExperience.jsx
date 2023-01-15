@@ -1,6 +1,14 @@
 import React from "react";
 import {toUpper, startCase} from "lodash";
 
+/**
+ * @param {string} company company name
+ * @param {string} position position name
+ * @param {string} from starting date
+ * @param {string} to ending date
+ * @param {string} description position description
+ * @return div containting one experience section in the actual CV
+ */
 function CVExperience({company, position, from, to, description}) {
     function toIsToday() {
         let today = new Date();
