@@ -16,15 +16,16 @@ import CVExperience from "./CVExperience";
 function Main() {
 
   // * State Section
-  const [personalInfo, setPersonalInfo] = React.useState({});
-  const [education, setEducation] = React.useState([{id: "0", institutionName: "", degree: "", major: "", minor: "", from: "", to: "", gpa: "", honors: ""}]);
-  const [experience, setExperience] = React.useState([{id: "0", company: "", position: "", from: "", to: "", description: ""}]);
+  const [personalInfo, setPersonalInfo] = React.useState(localStorage.getItem('personalInfo') ? JSON.parse(localStorage.getItem('personalInfo')) : {});
+  const [education, setEducation] = React.useState(localStorage.getItem('education') ? JSON.parse(localStorage.getItem('education')) : [{id: "0", institutionName: "", degree: "", major: "", minor: "", from: "", to: "", gpa: "", honors: ""}]);
+  const [experience, setExperience] = React.useState(localStorage.getItem('experience') ? JSON.parse(localStorage.getItem('experience')) : [{id: "0", company: "", position: "", from: "", to: "", description: ""}]);
+
 
   React.useEffect(() => {
-    localStorage.setItem("personalInfo", personalInfo);
-    localStorage.setItem("education", education);
-    localStorage.setItem("experience", experience);
-  });
+    localStorage.setItem("personalInfo", JSON.stringify(personalInfo));
+    localStorage.setItem("education", JSON.stringify(education));
+    localStorage.setItem("experience", JSON.stringify(experience));
+  }, [personalInfo, education, experience]);
 
 
   // * Event Handlers Section
