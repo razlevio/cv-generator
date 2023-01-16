@@ -29,6 +29,7 @@
   );
 }
 
+
 .lato {
   font-family: 'Lato', sans-serif;
 }
@@ -36,3 +37,17 @@
 .raleway {
   font-family: 'Raleway', sans-serif;
 }
+
+
+@media print {
+  /* hide all elements on the page */
+  * {
+    display: none;
+  }
+  
+  /* show the specific div you want to print */
+  #CV {
+    display: inline;
+  }
+}
+

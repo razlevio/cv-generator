@@ -3,7 +3,8 @@ import Container from "./Container";
 import Input from "./Input";
 import Subsection from "./Subsection";
 import DegreeType from "./DegreeType";
-import SkillType from "./SkillType"
+import SkillType from "./SkillType";
+import LanguageLevel from "./LanguageLevel";
 import CVHeader from "./CVHeader";
 import CVEducation from "./CVEducation";
 import CVExperience from "./CVExperience";
@@ -23,7 +24,8 @@ function Main() {
   const [personalInfo, setPersonalInfo] = React.useState(localStorage.getItem('personalInfo') ? JSON.parse(localStorage.getItem('personalInfo')) : {});
   const [education, setEducation] = React.useState(localStorage.getItem('education') ? JSON.parse(localStorage.getItem('education')) : [{id: "0", institutionName: "", degree: "", major: "", minor: "", from: "", to: "", gpa: "", honors: ""}]);
   const [experience, setExperience] = React.useState(localStorage.getItem('experience') ? JSON.parse(localStorage.getItem('experience')) : [{id: "0", company: "", position: "", from: "", to: "", description: ""}]);
-  const [skills, setSkills] = React.useState(localStorage.getItem("skills") ? JSON.parse(localStorage.getItem("skills")) : [{id: "0", skillType:"", skill:""}]); 
+  const [skills, setSkills] = React.useState(localStorage.getItem("skills") ? JSON.parse(localStorage.getItem("skills")) : [{id: "0", skillType:"", skill:""}]);
+  const [languages, setLanguages] = React.useState(localStorage.getItem("languages") ? JSON.parse(localStorage.getItem("languages")) : [{id: "0", language: "", level: ""}]);
 
   /**
    * useEffect hook to update the localStorage with every render
@@ -33,7 +35,8 @@ function Main() {
     localStorage.setItem("education", JSON.stringify(education));
     localStorage.setItem("experience", JSON.stringify(experience));
     localStorage.setItem("skills", JSON.stringify(skills));
-  }, [personalInfo, education, experience, skills]);
+    localStorage.setItem("languages", JSON.stringify(languages));
+  }, [personalInfo, education, experience, skills, languages]);
 
 // ? --------------------------------------------------------------------------------------------------
 // * Event Handlers Section
@@ -60,7 +63,7 @@ function Main() {
     const educationArray = [...education];
     educationArray[index] = educationToUpdate;
     setEducation(educationArray);
-  }
+  };
 
   /**
    * Update the experience form section state
@@ -74,7 +77,7 @@ function Main() {
       const experienceArray = [...experience];
       experienceArray[index] = experienceToUpdate;
       setExperience(experienceArray);
-  }
+  };
 
   /**
    * Update the skills form state
@@ -88,7 +91,21 @@ function Main() {
       const skillsArray = [...skills];
       skillsArray[index] = skillsToUpdate;
       setSkills(skillsArray);
-  }
+  };
+
+  /**
+   * Update the languages form state
+   * @param {object} e the event generated from the onchange
+   * @param {string} key the language object key that needed to be updated
+   * @param {string} index the index of the languages array that need to be updated
+   */
+  function updateLanguages(e, key, index) {
+    const languageToUpdate = languages[index];
+    languageToUpdate[key] = e.target.value;
+    const languagesArray = [...languages];
+    languagesArray[index] = languageToUpdate;
+    setLanguages(languagesArray);
+  };
 
 // ? --------------------------------------------------------------------------------------------------
 // * Utils Functions
@@ -166,6 +183,27 @@ function Main() {
     const skls = skills.filter(skill => skill.skillType === type);
     return skls;
   }
+
+  /**
+   * Remove a language section from the language state array
+   * @param {object} e the event object generated from the onclick event
+   * @param {number} index the index of the language array that need to be removed
+   */
+  function removeLanguage(e, index) {
+    const cloneOfLanguages = [...languages];
+    cloneOfLanguages.splice(index, 1);
+    if(cloneOfLanguages.length === 0) setLanguages([{id: "0", skillType:"", skill:""}]);
+    setLanguages(cloneOfLanguages)
+  }
+
+  /**
+   * Add new language to the languages state array and initialize it to empty strings
+   */
+  function newLanguage() {
+    const nextId = (Math.random() + 1).toString(36).substring(2);
+    const newObj = {id: nextId, language: "", level: ""};
+    setLanguages([...languages, newObj]);
+  };
 
 // ? --------------------------------------------------------------------------------------------------
 // * Render JSX Functions
@@ -270,6 +308,26 @@ function Main() {
   }
 
   /**
+   * Languages form
+   * @param {string} id 
+   * @returns div including the languages information inserted into the education form section by id
+   */
+  function renderLanguages(id) {
+      const index = languages.findIndex(elem => elem.id === id);
+      const isTheLastElem = index === languages.length-1;
+      return(
+        <div key={id} className="flex flex-col gap-5">
+            <Input id="language" name="language" type="text" value={languages[index].language} placeholder="Language" handleInputChange={e => updateLanguages(e, "language", index) }/>
+            <LanguageLevel key={id} name="languageLevel" value={languages[index].level} placeholder="Language Level" handleInputChange={e => updateLanguages(e, "level", index)}/>
+            <div className="flex justify-center items-center gap-3">
+              {isTheLastElem && <button onClick={newLanguage} className="text-zinc-400 border border-zinc-400 hover:bg-zinc-400 hover:text-white active:bg-zinc-600 font-bold uppercase px-8 py-2 w-1/2 rounded outline-none focus:outline-none ease-linear transition-all duration-150">Add</button>} 
+              <button onClick={e => {removeLanguage(e, index)}} className="text-red-400 border border-red-400 hover:bg-red-400 hover:text-white active:bg-red-600 font-bold uppercase px-8 py-2 w-1/2 rounded outline-none focus:outline-none ease-linear transition-all duration-150">Remove</button>
+            </div>
+        </div>
+      )
+  }
+
+  /**
    * Render the actual CV Education section
    * @param {*} id 
    * @returns div containing all of the formatted education section in the actual CV
@@ -334,10 +392,13 @@ function Main() {
         <Subsection heading="Skills">
           {skills.map(elem => renderSkills(elem.id))}
         </Subsection>
+        <Subsection heading="Languages">
+          {languages.map(elem => renderLanguages(elem.id))}
+        </Subsection>
       </Container>
 
-      <Container>
-          <div className="flex flex-col gap-5">
+      <Container type="CV">
+          <div id="CV" className="flex flex-col gap-5">
             <CVHeader firstName={personalInfo.firstName} lastName={personalInfo.lastName} tel={personalInfo.tel} email={personalInfo.email} website={personalInfo.website} linkedin={personalInfo.linkedin} />
             <div className="flex justify-between gap-5 m-3">
               <CVColumn>
