@@ -9,6 +9,7 @@ import CVHeader from "./CVHeader";
 import CVEducation from "./CVEducation";
 import CVExperience from "./CVExperience";
 import CVSkills from "./CVSkills";
+import CVLanguages from "./CVLanguages";
 import CVColumn from "./CVColumn";
 
 /**
@@ -373,6 +374,17 @@ function Main() {
     return (<CVSkills key={id} skillType={skills[index].skillType} skill={skills[index].skill} lastElementInType={isTheLastElementInType} />);
   }
 
+  /**
+   * Render the actual CV Languages section
+   * @param {string} id 
+   * @returns div containing all of the formatted languages section in the actual CV
+   */
+  function renderCVLanguages(id) {
+    const index = languages.findIndex(elem => elem.id === id);
+    const isTheLastElem = index === languages.length-1;
+    return (<CVLanguages id={id} key={id} language={languages[index].language} level={languages[index].level} />);
+  }
+
 // ? --------------------------------------------------------------------------------------------------
 // * Main compoenent JSX return statement
 // ? --------------------------------------------------------------------------------------------------
@@ -430,6 +442,12 @@ function Main() {
                     <div className="flex flex-col gap-3">
                         {experience.map(elem => renderCVExperience(elem.id))}
                     </div>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <p className="text-2xl font-extralight">LANGUAGES</p>
+                      <div className="flex flex-col gap-3">
+                          {languages.map(elem => renderCVLanguages(elem.id))}
+                      </div>
                   </div>
               </CVColumn>
             </div>
