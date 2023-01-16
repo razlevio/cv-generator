@@ -13,7 +13,7 @@ function LanguageLevel({name, value, placeholder, handleInputChange}) {
     return (
         <div className="flex flex-col gap-1">
         <label htmlFor={name}>{placeholder}</label>
-        <select name={name} id={name} onChange={handleInputChange} className="text-black border p-2 rounded">
+        <select value={value} name={name} id={name} onChange={handleInputChange} className="text-black border p-2 rounded">
             {options.map(option => <option key={option} value={option}>{option}</option>)}
         </select>
         </div>
