@@ -129,6 +129,30 @@ function Main() {
   }
 
   /**
+   * Loading detailed CV example 
+   * @param {object} e the event generated from the button click 
+   */
+  function loadExample(e) {
+    setPersonalInfo({firstName:"John", lastName:"Doe", tel:"5555555555" , email:"johndoe@email.com", website:"johndoe.com", linkedin:"linkedin.com/in/johndoe"});
+    setEducation([{id: "0", institutionName: "Stanford Universiry", degree: "BSc", major: "Computer Science", minor: "", from: "2014-01-01", to: "2018-01-01", gpa: "3.67", honors: "Alpha Phi Alpha"}, {id: "1", institutionName: "Yale Universiry", degree: "MSc", major: "Software Engineering", minor: "Innovation", from: "2018-01-01", to: "2020-01-01", gpa: "4.00", honors: "President List"}, {id: "2", institutionName: "Harvard Universiry", degree: "PhD", major: "Neuroscience CS", minor: "", from: "2020-01-01", to: "2022-01-01", gpa: "3.67", honors: ""}]);
+    setExperience([{id: "0", company: "Apple", position: "Software Engineer", from: "2016-01-01", to: "Present", description: "Participated in technical trainings, workshops and networking events to expand my knowledge and connect with industry experts"}, {id: "1", company: "Google", position: "Software Engineer Student", from: "2015-01-01", to: "2016-01-01", description: "Gathered and applied technical knowledge from working closely with experienced software engineers, to enhance my software development skills"}, {id: "3", company: "Microsoft", position: "Software Engineer Intern", from: "2014-01-01", to: "2015-01-01", description: "Developed and maintained web applications using technologies such as JavaScript, React, and Node.js. Collaborated with cross-functional teams to identify and resolve bugs and improve application performance"}]);
+    setSkills([{id: "0", skillType:"Technical", skill:"Python"}, {id: "1", skillType:"Technical", skill:"JavaScript"}, {id: "2", skillType:"Technical", skill:"C++"}, {id: "3", skillType:"Technical", skill:"React"}, {id: "4", skillType:"Technical", skill:"Django"}, {id: "5", skillType:"Technical", skill:"Java"}, {id: "6", skillType:"Technical", skill:"TailwindCSS"}, {id: "7", skillType:"Technical", skill:"Bootstrap"}, {id: "8", skillType:"Technical", skill:"LaTeX"}, {id: "9", skillType:"Proffesional", skill:"Accounting"}, {id: "10", skillType:"Proffesional", skill:"Excel"}, {id: "11", skillType:"Proffesional", skill:"ChatGPT"}, {id: "12", skillType:"Proffesional", skill:"Presentations"}, {id: "14", skillType:"Proffesional", skill:"Notion"}, {id: "15", skillType:"Proffesional", skill:"Obsidian"}, {id: "13", skillType:"Proffesional", skill:"Googleing"},{id: "14", skillType:"Soft", skill:"Time-Management"}, {id: "15", skillType:"Soft", skill:"Teamwork"}, {id: "15", skillType:"Soft", skill:"Creativity"}, {id: "16", skillType:"Soft", skill:"Teamwork"}, {id: "17", skillType:"Soft", skill:"Negotiation"}, {id: "18", skillType:"Soft", skill:"Leadership"}]);
+    setLanguages([{id: "0", language: "English", level: "Native or bilingual"}, {id: "1", language: "French", level:"Limited working proficiency"}]);
+  }
+
+  /**
+   * Reset the form deleting everything 
+   * @param {object} e the event generated from the button click 
+   */
+  function resetForm(e) {
+    setPersonalInfo({firstName:"", lastName:"", tel:"" , email:"", website:"", linkedin:""});
+    setEducation([{id: "0", institutionName: "", degree: "", major: "", minor: "", from: "", to: "", gpa: "", honors: ""}]);
+    setExperience([{id: "0", company: "", position: "", from: "", to: "", description: ""}]);
+    setSkills([{id: "0", skillType:"", skill:""}]);
+    setLanguages([{id: "0", language: "", level: ""}]);
+  }
+
+  /**
    * Remove an education section from the education state array
    * @param {object} e the event object generated from the onclick event
    * @param {number} index the index of the education array that need to be removed
@@ -439,13 +463,13 @@ function Main() {
         </ErrorBoundary>
         <hr className="hr-style m-5" />
         <div className="flex justify-center p-3 gap-3">
-          <button onClick={e => {removeLanguage(e, index)}} className="text-blue-400 border border-blue-400 hover:bg-blue-400 hover:text-white active:bg-blue-600 font-bold uppercase px-8 py-2 w-1/2 rounded outline-none focus:outline-none ease-linear transition-all duration-150">Load Example</button>
-          <button onClick={e => {removeLanguage(e, index)}} className="text-purple-400 border border-purple-400 hover:bg-purple-400 hover:text-white active:bg-purple-600 font-bold uppercase px-8 py-2 w-1/2 rounded outline-none focus:outline-none ease-linear transition-all duration-150">Reset</button>
+          <button onClick={e => {loadExample(e)}} className="text-blue-400 border border-blue-400 hover:bg-blue-400 hover:text-white active:bg-blue-600 font-bold uppercase px-8 py-2 w-1/2 rounded outline-none focus:outline-none ease-linear transition-all duration-150">Load Example</button>
+          <button onClick={e => {resetForm(e)}} className="text-purple-400 border border-purple-400 hover:bg-purple-400 hover:text-white active:bg-purple-600 font-bold uppercase px-8 py-2 w-1/2 rounded outline-none focus:outline-none ease-linear transition-all duration-150">Reset</button>
         </div>
       </Container>
 
       <Container type="CV">
-          <div id="CV" className="flex flex-col gap-5">
+          <div id="CV" className="flex flex-col gap-7">
             <ErrorBoundary FallbackComponent={ErrorFallback}>
               <CVHeader firstName={personalInfo.firstName} lastName={personalInfo.lastName} tel={personalInfo.tel} email={personalInfo.email} website={personalInfo.website} linkedin={personalInfo.linkedin} />
             </ErrorBoundary>

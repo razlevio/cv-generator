@@ -8,7 +8,7 @@ import React from "react";
 function CVColumn(props) {
     return(
         <div className="max-w-[50%] flex flex-col">
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-14">
                 {props.children}
             </div>
         </div>

@@ -11,6 +11,7 @@ import {toUpper, startCase} from "lodash";
  */
 function CVExperience({company, position, from, to, description}) {
     function toIsToday() {
+        if(to === "Present") return true;
         let today = new Date();
         let year = today.getFullYear();
         let month = (today.getMonth() + 1) < 10 ? `0${today.getMonth() + 1}` : (today.getMonth() + 1);
