@@ -11,7 +11,9 @@ import CVExperience from "./CVExperience";
 import CVSkills from "./CVSkills";
 import CVLanguages from "./CVLanguages";
 import CVColumn from "./CVColumn";
-import { ErrorBoundary } from 'react-error-boundary'
+import { ErrorBoundary } from "react-error-boundary";
+import JsPDF from 'jspdf';
+
 
 /**
  * Main React Compoenent
@@ -151,6 +153,13 @@ function Main() {
     setSkills([{id: "0", skillType:"", skill:""}]);
     setLanguages([{id: "0", language: "", level: ""}]);
   }
+
+  function generatePDF() {
+    const pdf = new JsPDF('portrait','pt','a4');
+    pdf.html(document.querySelector('#CV')).then(() => {
+        pdf.save(`${personalInfo.firstName}-${personalInfo.lastName}.pdf`);
+    });
+  };
 
   /**
    * Remove an education section from the education state array
@@ -463,8 +472,10 @@ function Main() {
         </ErrorBoundary>
         <hr className="hr-style m-5" />
         <div className="flex justify-center p-3 gap-3">
-          <button onClick={e => {loadExample(e)}} className="text-blue-400 border border-blue-400 hover:bg-blue-400 hover:text-white active:bg-blue-600 font-bold uppercase px-8 py-2 w-1/2 rounded outline-none focus:outline-none ease-linear transition-all duration-150">Load Example</button>
-          <button onClick={e => {resetForm(e)}} className="text-purple-400 border border-purple-400 hover:bg-purple-400 hover:text-white active:bg-purple-600 font-bold uppercase px-8 py-2 w-1/2 rounded outline-none focus:outline-none ease-linear transition-all duration-150">Reset</button>
+          <button onClick={loadExample} className="text-blue-400 border border-blue-400 hover:bg-blue-400 hover:text-white active:bg-blue-600 font-bold uppercase px-8 py-2 w-1/2 rounded outline-none focus:outline-none ease-linear transition-all duration-150">Load Example</button>
+          <button onClick={resetForm} className="text-purple-400 border border-purple-400 hover:bg-purple-400 hover:text-white active:bg-purple-600 font-bold uppercase px-8 py-2 w-1/2 rounded outline-none focus:outline-none ease-linear transition-all duration-150">Reset</button>
+          <button onClick={generatePDF} className="text-green-500 border border-green-500 hover:bg-green-500 hover:text-white active:bg-green-00 font-bold uppercase px-8 py-2 w-1/2 rounded outline-none focus:outline-none ease-linear transition-all duration-150">Generate PDF</button>
+
         </div>
       </Container>
 
