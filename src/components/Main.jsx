@@ -11,6 +11,7 @@ import CVExperience from "./CVExperience";
 import CVSkills from "./CVSkills";
 import CVLanguages from "./CVLanguages";
 import CVColumn from "./CVColumn";
+import { ErrorBoundary } from 'react-error-boundary'
 
 /**
  * Main React Compoenent
@@ -111,6 +112,21 @@ function Main() {
 // ? --------------------------------------------------------------------------------------------------
 // * Utils Functions
 // ? --------------------------------------------------------------------------------------------------
+
+  /**
+ * Error fallback comonent that will render a dive showing error that will handeld by error boundery
+ * @param {object} error the error object
+ * @returns div explaining the error message
+ */
+  function ErrorFallback({error, resetErrorBoundery}) {
+    return (
+      <div>
+          There was an error:{' '}
+          <pre style={{whiteSpace: 'normal'}}>{error.message}</pre>
+          <button onClick={resetErrorBoundery}>Try Again</button>
+      </div>
+    )
+  }
 
   /**
    * Remove an education section from the education state array
@@ -392,27 +408,49 @@ function Main() {
   return (
     <div className="flex flex-col justify-center items-center 2xl:flex-row">
       <Container>
-        <Subsection heading="Personal Information">
-          {renderPersonalInformation()}
-        </Subsection>
-        <Subsection heading="Education">
-          {education.map(elem => renderEducation(elem.id))}
-        </Subsection>
-        <Subsection heading="Experience">
-          {experience.map(elem => renderExperience(elem.id))}
-        </Subsection>
-        <Subsection heading="Skills">
-          {skills.map(elem => renderSkills(elem.id))}
-        </Subsection>
-        <Subsection heading="Languages">
-          {languages.map(elem => renderLanguages(elem.id))}
-        </Subsection>
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <Subsection heading="Personal Information">
+            {renderPersonalInformation()}
+          </Subsection>
+        </ErrorBoundary>
+        <hr className="hr-style m-5" />
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <Subsection heading="Education">
+            {education.map(elem => renderEducation(elem.id))}
+          </Subsection>
+        </ErrorBoundary>
+        <hr className="hr-style m-5" />
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <Subsection heading="Experience">
+            {experience.map(elem => renderExperience(elem.id))}
+          </Subsection>
+        </ErrorBoundary>
+        <hr className="hr-style m-5" />
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <Subsection heading="Skills">
+            {skills.map(elem => renderSkills(elem.id))}
+          </Subsection>
+        </ErrorBoundary>
+        <hr className="hr-style m-5" />
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <Subsection heading="Languages">
+            {languages.map(elem => renderLanguages(elem.id))}
+          </Subsection>
+        </ErrorBoundary>
+        <hr className="hr-style m-5" />
+        <div className="flex justify-center p-3 gap-3">
+          <button onClick={e => {removeLanguage(e, index)}} className="text-blue-400 border border-blue-400 hover:bg-blue-400 hover:text-white active:bg-blue-600 font-bold uppercase px-8 py-2 w-1/2 rounded outline-none focus:outline-none ease-linear transition-all duration-150">Load Example</button>
+          <button onClick={e => {removeLanguage(e, index)}} className="text-purple-400 border border-purple-400 hover:bg-purple-400 hover:text-white active:bg-purple-600 font-bold uppercase px-8 py-2 w-1/2 rounded outline-none focus:outline-none ease-linear transition-all duration-150">Reset</button>
+        </div>
       </Container>
 
       <Container type="CV">
           <div id="CV" className="flex flex-col gap-5">
-            <CVHeader firstName={personalInfo.firstName} lastName={personalInfo.lastName} tel={personalInfo.tel} email={personalInfo.email} website={personalInfo.website} linkedin={personalInfo.linkedin} />
+            <ErrorBoundary FallbackComponent={ErrorFallback}>
+              <CVHeader firstName={personalInfo.firstName} lastName={personalInfo.lastName} tel={personalInfo.tel} email={personalInfo.email} website={personalInfo.website} linkedin={personalInfo.linkedin} />
+            </ErrorBoundary>
             <div className="flex justify-between gap-5 m-3">
+            <ErrorBoundary FallbackComponent={ErrorFallback}>
               <CVColumn>
                   <div className="flex flex-col gap-1">
                     <p className="text-2xl font-extralight">EDUCATION</p>
@@ -436,6 +474,8 @@ function Main() {
                     </div>
                   </div>
               </CVColumn>
+            </ErrorBoundary>
+            <ErrorBoundary FallbackComponent={ErrorFallback}>
               <CVColumn>
                   <div className="flex flex-col gap-1">
                     <p className="text-2xl font-extralight">EXPERIENCE</p>
@@ -450,6 +490,7 @@ function Main() {
                       </div>
                   </div>
               </CVColumn>
+            </ErrorBoundary>
             </div>
           </div>
       </Container>
