@@ -469,7 +469,7 @@ function Main() {
       </Container>
 
       <Container type="CV">
-          <div id="CV" className="flex flex-col gap-7">
+          <div className="flex flex-col gap-7">
             <ErrorBoundary FallbackComponent={ErrorFallback}>
               <CVHeader firstName={personalInfo.firstName} lastName={personalInfo.lastName} tel={personalInfo.tel} email={personalInfo.email} website={personalInfo.website} linkedin={personalInfo.linkedin} />
             </ErrorBoundary>
