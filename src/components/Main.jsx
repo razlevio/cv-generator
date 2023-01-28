@@ -12,7 +12,6 @@ import CVSkills from "./CVSkills";
 import CVLanguages from "./CVLanguages";
 import CVColumn from "./CVColumn";
 import { ErrorBoundary } from "react-error-boundary";
-import JsPDF from 'jspdf';
 
 
 /**
@@ -138,7 +137,7 @@ function Main() {
     setPersonalInfo({firstName:"John", lastName:"Doe", tel:"5555555555" , email:"johndoe@email.com", website:"johndoe.com", linkedin:"linkedin.com/in/johndoe"});
     setEducation([{id: "0", institutionName: "Stanford Universiry", degree: "BSc", major: "Computer Science", minor: "", from: "2014-01-01", to: "2018-01-01", gpa: "3.67", honors: "Alpha Phi Alpha"}, {id: "1", institutionName: "Yale Universiry", degree: "MSc", major: "Software Engineering", minor: "Innovation", from: "2018-01-01", to: "2020-01-01", gpa: "4.00", honors: "President List"}, {id: "2", institutionName: "Harvard Universiry", degree: "PhD", major: "Neuroscience CS", minor: "", from: "2020-01-01", to: "2022-01-01", gpa: "3.67", honors: ""}]);
     setExperience([{id: "0", company: "Apple", position: "Software Engineer", from: "2016-01-01", to: "Present", description: "Participated in technical trainings, workshops and networking events to expand my knowledge and connect with industry experts"}, {id: "1", company: "Google", position: "Software Engineer Student", from: "2015-01-01", to: "2016-01-01", description: "Gathered and applied technical knowledge from working closely with experienced software engineers, to enhance my software development skills"}, {id: "3", company: "Microsoft", position: "Software Engineer Intern", from: "2014-01-01", to: "2015-01-01", description: "Developed and maintained web applications using technologies such as JavaScript, React, and Node.js. Collaborated with cross-functional teams to identify and resolve bugs and improve application performance"}]);
-    setSkills([{id: "0", skillType:"Technical", skill:"Python"}, {id: "1", skillType:"Technical", skill:"JavaScript"}, {id: "2", skillType:"Technical", skill:"C++"}, {id: "3", skillType:"Technical", skill:"React"}, {id: "4", skillType:"Technical", skill:"Django"}, {id: "5", skillType:"Technical", skill:"Java"}, {id: "6", skillType:"Technical", skill:"TailwindCSS"}, {id: "7", skillType:"Technical", skill:"Bootstrap"}, {id: "8", skillType:"Technical", skill:"LaTeX"}, {id: "9", skillType:"Proffesional", skill:"Accounting"}, {id: "10", skillType:"Proffesional", skill:"Excel"}, {id: "11", skillType:"Proffesional", skill:"ChatGPT"}, {id: "12", skillType:"Proffesional", skill:"Presentations"}, {id: "14", skillType:"Proffesional", skill:"Notion"}, {id: "15", skillType:"Proffesional", skill:"Obsidian"}, {id: "13", skillType:"Proffesional", skill:"Googleing"},{id: "14", skillType:"Soft", skill:"Time-Management"}, {id: "15", skillType:"Soft", skill:"Teamwork"}, {id: "15", skillType:"Soft", skill:"Creativity"}, {id: "16", skillType:"Soft", skill:"Teamwork"}, {id: "17", skillType:"Soft", skill:"Negotiation"}, {id: "18", skillType:"Soft", skill:"Leadership"}]);
+    setSkills([{id: "0", skillType:"Technical", skill:"Python"}, {id: "1", skillType:"Technical", skill:"JavaScript"}, {id: "2", skillType:"Technical", skill:"C++"}, {id: "3", skillType:"Technical", skill:"React"}, {id: "4", skillType:"Technical", skill:"Django"}, {id: "5", skillType:"Technical", skill:"Java"}, {id: "6", skillType:"Technical", skill:"TailwindCSS"}, {id: "7", skillType:"Technical", skill:"Bootstrap"}, {id: "8", skillType:"Technical", skill:"LaTeX"}, {id: "9", skillType:"Proffesional", skill:"Accounting"}, {id: "10", skillType:"Proffesional", skill:"Excel"}, {id: "11", skillType:"Proffesional", skill:"ChatGPT"}, {id: "12", skillType:"Proffesional", skill:"Presentations"}, {id: "13", skillType:"Proffesional", skill:"Notion"}, {id: "14", skillType:"Proffesional", skill:"Obsidian"}, {id: "15", skillType:"Proffesional", skill:"Googleing"},{id: "16", skillType:"Soft", skill:"Time-Management"}, {id: "17", skillType:"Soft", skill:"Teamwork"}, {id: "18", skillType:"Soft", skill:"Creativity"}, {id: "19", skillType:"Soft", skill:"Teamwork"}, {id: "20", skillType:"Soft", skill:"Negotiation"}, {id: "21", skillType:"Soft", skill:"Leadership"}]);
     setLanguages([{id: "0", language: "English", level: "Native or bilingual"}, {id: "1", language: "French", level:"Limited working proficiency"}]);
   }
 
@@ -154,11 +153,15 @@ function Main() {
     setLanguages([{id: "0", language: "", level: ""}]);
   }
 
+  /**
+   * generate PDF version of the CV
+   */
   function generatePDF() {
-    const pdf = new JsPDF('portrait','pt','a4');
-    pdf.html(document.querySelector('#CV')).then(() => {
-        pdf.save(`${personalInfo.firstName}-${personalInfo.lastName}.pdf`);
-    });
+    let printContents = document.getElementById('CV').innerHTML;
+    let originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
   };
 
   /**
